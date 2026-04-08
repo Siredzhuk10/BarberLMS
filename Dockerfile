@@ -9,4 +9,4 @@ COPY ./code /code/
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn simple_lms.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python importer.py && gunicorn simple_lms.wsgi:application --bind 0.0.0.0:8000"]
