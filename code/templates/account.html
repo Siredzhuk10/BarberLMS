@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Кабінет{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <h1 class="hero-title">Особистий кабінет</h1>
+    <p class="hero-subtitle">Користувач: {{ request.user.username }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card-barber">
+          <h2 class="fs-5 text-uppercase">Мої записи на курси</h2>
+          {% if enrolled_courses %}
+            {% for course in enrolled_courses %}
+              <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 py-2">
+                <span class="course-title">{{ course.name }}</span>
+                <a href="/courses/{{ course.id }}/" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">Деталі</a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-secondary mb-0">Записів поки немає.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-barber">
+          <h2 class="fs-5 text-uppercase">Мої вподобання</h2>
+          {% if liked_courses %}
+            {% for course in liked_courses %}
+              <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 py-2">
+                <span class="course-title">{{ course.name }}</span>
+                <a href="/courses/{{ course.id }}/" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">Деталі</a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-secondary mb-0">Вподобань поки немає.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

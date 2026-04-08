@@ -1,0 +1,4 @@
+django== 5.0.6 ##framework
+psycopg2-binary== 2.9.9 ##driverpostgress
+pillow== 10.3.0 ##mengolah gambar
+django-silk == 5.1.0
