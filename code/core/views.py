@@ -177,11 +177,11 @@ def userCourseStats(request):
     })
     
 def create_admin(request):
-if not User.objects.filter(username="admin").exists():
-    User.objects.create_superuser(
-        username="admin",
-        email="admin@gmail.com",
-        password="admin"
-     )
-    return HttpResponse("Admin created!")
-return HttpResponse("Already exists")
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="admin",
+            email="admin@gmail.com",
+            password="admin"
+        )
+        return HttpResponse("Admin created!")
+    return HttpResponse("Already exists")
