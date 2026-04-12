@@ -71,45 +71,6 @@
       <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Макс. ціна</div><div class="stats-number"><span class="money">{{ stats.max_price|default:0 }}</span> ₴</div></div></div>
       <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Середня ціна</div><div class="stats-number"><span class="money">{{ stats.avg_price|default:0|floatformat:0 }}</span> ₴</div></div></div>
     </div>
-    <div class="row align-items-end mb-4">
-      <div class="col-md-6">
-        <div class="section-title">Можливості системи</div>
-        <div class="section-heading">Що зберігається в LMS</div>
-      </div>
-      <div class="col-md-6 text-md-end text-secondary small">
-        Курс, модулі, контент, записи учнів, базова статистика.
-      </div>
-    </div>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card-barber">
-          <h3 class="fs-6 text-uppercase">Стрижки та fade</h3>
-          <p class="small text-secondary mb-2">
-            Модулі для роботи машинкою, лінії та перехід.
-          </p>
-          <span class="badge-outline">Fade · Taper · Skin</span>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-barber">
-          <h3 class="fs-6 text-uppercase">Борода та гоління</h3>
-          <p class="small text-secondary mb-2">
-            Уроки по бороді, голінню і догляду.
-          </p>
-          <span class="badge-outline">Beard · Hot Towel</span>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-barber">
-          <h3 class="fs-6 text-uppercase">Робота барбершопу</h3>
-          <p class="small text-secondary mb-2">
-            Розклад, підписники на курсах, прості показники.
-          </p>
-          <span class="badge-outline">Business · Management</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 {% endblock %}
 

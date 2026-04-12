@@ -75,6 +75,13 @@
                     class="btn-more mb-2"
                     data-desc-id="{{ forloop.counter }}"
                   >Читати більше ↓</button>
+                  <a href="/courses/{{ course.id }}/" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">Деталі</a>
+                    <a href="/courses/{{ course.id }}/enroll/?next=/courses/" class="btn btn-sm btn-warning rounded-pill px-3 py-1">
+                    {% if course.id in enrolled_ids %}Скасувати запис{% else %}Записатися{% endif %}
+                  </a>
+                  <a href="/courses/{{ course.id }}/like/?next=/courses/" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1">
+                   {% if course.id in liked_ids %}Прибрати вподобання{% else %}Вподобати{% endif %}
+                  </a>
                 {% endif %}
               {% else %}
                 <p class="small text-secondary mb-2">Опис відсутній</p>
