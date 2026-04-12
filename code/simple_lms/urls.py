@@ -1,7 +1,23 @@
+"""Django URL Configuration for SimpleLMS."""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from core.views import *
+from core.views import (
+    index,
+    loginView,
+    registerView,
+    logoutView,
+    accountView,
+    testing,
+    allCourse,
+    courseDetail,
+    toggleLike,
+    toggleEnroll,
+    userProfile,
+    courseStats,
+    userCourseStats,
+    create_admin,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
