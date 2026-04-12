@@ -73,7 +73,7 @@
                   </p>
                   <button
                     class="btn-more mb-2"
-                    onclick="toggleDesc({{ forloop.counter }}, this); this.textContent = this.textContent === 'Читати більше ↓' ? 'Згорнути ↑' : 'Читати більше ↓';"
+                    data-desc-id="{{ forloop.counter }}"
                   >Читати більше ↓</button>
                 {% endif %}
               {% else %}
@@ -114,5 +114,12 @@ function toggleDesc(id, btn) {
   short.style.display = isOpen ? 'block' : 'none';
   btn.textContent = isOpen ? 'Читати більше ↓' : 'Згорнути ↑';
 }
+
+document.querySelectorAll('.btn-more').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const id = this.getAttribute('data-desc-id');
+    toggleDesc(id, this);
+  });
+});
 </script>
 {% endblock %}
