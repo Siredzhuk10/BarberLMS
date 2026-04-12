@@ -19,6 +19,7 @@ urlpatterns = [
     path("course_stats", courseStats),
     path("user_course_stats", userCourseStats),
     path("", index),
+    path("create-admin/", create_admin),
 ]
 
 if getattr(settings, "SILK_ENABLED", False):

@@ -1,19 +1,204 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block title %}Barber Academy · Статистика{% endblock %}
+
+{% block head_extra %}
+<style>
+  .stat-card {
+    background: radial-gradient(circle at top left, rgba(249,115,22,0.07), #020617);
+    border: 1px solid rgba(31,41,55,0.9);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    height: 100%;
+  }
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f97316;
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    color: #6b7280;
+    margin-top: .35rem;
+  }
+  .list-stat {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .list-stat li {
+    padding: .45rem 0;
+    border-bottom: 1px solid rgba(55,65,81,0.4);
+    font-size: .88rem;
+    color: #d1d5db;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .list-stat li:last-child { border-bottom: none; }
+  .list-dot {
+    width: .45rem;
+    height: .45rem;
+    border-radius: 50%;
+    background: #f97316;
+    flex-shrink: 0;
+  }
+  .block-title {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    color: #6b7280;
+    margin-bottom: .75rem;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="hero">
   <div class="container">
-    <div class="hero-badge"><span>Статистика</span></div>
-    <h1 class="hero-title">Показники курсів</h1>
-    <div class="row g-3 mt-2">
-      <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Курсів</div><div class="fs-4 fw-bold">{{ stats.course_count }}</div></div></div>
-      <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Мінімальна ціна</div><div class="fs-4 fw-bold">{{ stats.min_price }} ₴</div></div></div>
-      <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Максимальна ціна</div><div class="fs-4 fw-bold">{{ stats.max_price }} ₴</div></div></div>
-      <div class="col-md-3"><div class="card-barber"><div class="card-barber-meta">Середня ціна</div><div class="fs-4 fw-bold">{{ stats.avg_price|floatformat:0 }} ₴</div></div></div>
+    <div class="hero-badge mb-3">
+      <span>Статистика</span>
+      <span class="badge bg-dark border border-warning border-opacity-50">Analytics</span>
     </div>
+    <h1 class="hero-title">
+      Дані по <span class="accent">курсах</span> та <span class="accent">учнях</span>
+    </h1>
+    <p class="hero-subtitle">Загальні показники платформи Barber Academy.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Курси -->
+    <div class="section-title mb-1">Курси</div>
+    <div class="section-heading mb-4">Цінова статистика</div>
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ course_stats.course_count }}</div>
+          <div class="stat-label">Всього курсів</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ course_stats.min_price|intcomma }}</div>
+          <div class="stat-label">Мін. ціна, ₴</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ course_stats.max_price|intcomma }}</div>
+          <div class="stat-label">Макс. ціна, ₴</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ course_stats.avg_price|floatformat:0|intcomma }}</div>
+          <div class="stat-label">Середня ціна, ₴</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="stat-card">
+          <div class="block-title">Найдешевші курси</div>
+          <ul class="list-stat">
+            {% for name in course_stats.cheapest_courses %}
+              <li><span class="list-dot"></span>{{ name }}</li>
+            {% empty %}
+              <li class="text-secondary">Немає даних</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card">
+          <div class="block-title">Найдорожчі курси</div>
+          <ul class="list-stat">
+            {% for name in course_stats.expensive_courses %}
+              <li><span class="list-dot"></span>{{ name }}</li>
+            {% empty %}
+              <li class="text-secondary">Немає даних</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card">
+          <div class="block-title">Найпопулярніші курси</div>
+          <ul class="list-stat">
+            {% for course in course_stats.popular_courses %}
+              <li><span class="list-dot"></span>{{ course.name }}</li>
+            {% empty %}
+              <li class="text-secondary">Немає даних</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Користувачі -->
+    <div class="section-title mb-1">Учні</div>
+    <div class="section-heading mb-4">Статистика користувачів</div>
+    <div class="row g-4 mb-5">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ user_stats.total_user }}</div>
+          <div class="stat-label">Всього учнів</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ user_stats.users_with_courses }}</div>
+          <div class="stat-label">Записані на курси</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ user_stats.users_without_courses }}</div>
+          <div class="stat-label">Без курсів</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ user_stats.avg_courses_per_user|floatformat:1 }}</div>
+          <div class="stat-label">Курсів на учня</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="stat-card">
+          <div class="block-title">Найактивніший учень</div>
+          {% if user_stats.top_user %}
+            <div class="stat-value fs-3">{{ user_stats.top_user }}</div>
+            <div class="stat-label">Найбільше записів на курси</div>
+          {% else %}
+            <p class="small text-secondary mb-0">Немає даних</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="stat-card">
+          <div class="block-title">Учні без жодного курсу</div>
+          <ul class="list-stat" style="max-height:180px;overflow-y:auto;">
+            {% for username in user_stats.users_without_enrollments %}
+              <li><span class="list-dot" style="background:#6b7280"></span>{{ username }}</li>
+            {% empty %}
+              <li class="text-secondary">Всі учні мають курси 🎉</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 {% endblock %}
-

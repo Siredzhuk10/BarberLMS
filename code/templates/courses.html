@@ -1,6 +1,30 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block title %}Barber Academy · Курси{% endblock %}
+
+{% block head_extra %}
+<style>
+  .course-desc-short { display: block; }
+  .course-desc-full  { display: none; }
+  .course-desc-full.open { display: block; }
+  .btn-more {
+    background: none;
+    border: 1px solid rgba(249,115,22,0.4);
+    color: #f97316;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    border-radius: 999px;
+    padding: .2rem .85rem;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .btn-more:hover {
+    background: rgba(249,115,22,0.12);
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="hero">
@@ -15,7 +39,9 @@
           Курси для майстрів
           <span class="accent">барбершопу</span>
         </h1>
-        <p class="hero-subtitle">Курси для барбера: короткий опис і дії.</p>
+        <p class="hero-subtitle">
+          Навчайся у кращих майстрів — від базових технік до просунутого скінфейду.
+        </p>
       </div>
       <div class="col-md-4 text-md-end mt-3 mt-md-0">
         <span class="badge-outline">Курсів: {{ courses|length }}</span>
@@ -33,23 +59,37 @@
             <div class="card-barber">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="badge-outline">Курс</span>
-                <span class="card-barber-price"><span class="money">{{ course.price }}</span> ₴</span>
+                <span class="card-barber-price">{{ course.price|intcomma }} ₴</span>
               </div>
-              <h2 class="fs-5 text-uppercase mb-1 course-title">{{ course.name }}</h2>
-              <p class="small text-secondary mb-2">{{ course.description|truncatechars:70|default:"Опис відсутній" }}</p>
+              <h2 class="fs-5 text-uppercase mb-1">{{ course.name }}</h2>
+
+              {% if course.description %}
+                <p class="small text-secondary mb-1 course-desc-short" id="short-{{ forloop.counter }}">
+                  {{ course.description|truncatechars:90 }}
+                </p>
+                {% if course.description|length > 90 %}
+                  <p class="small text-secondary mb-1 course-desc-full" id="full-{{ forloop.counter }}">
+                    {{ course.description }}
+                  </p>
+                  <button
+                    class="btn-more mb-2"
+                    onclick="toggleDesc({{ forloop.counter }}, this); this.textContent = this.textContent === 'Читати більше ↓' ? 'Згорнути ↑' : 'Читати більше ↓';"
+                  >Читати більше ↓</button>
+                {% endif %}
+              {% else %}
+                <p class="small text-secondary mb-2">Опис відсутній</p>
+              {% endif %}
+
               <div class="small text-secondary mb-3">
-                Автор:
+                Викладач:
                 <strong>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</strong>
-                ({{ course.teacher.username }})
               </div>
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <span class="card-barber-meta">Дата: {{ course.created_at|date:"d.m.Y" }}</span>
-                <a href="/courses/{{ course.id }}/" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">Деталі</a>
-                <a href="/courses/{{ course.id }}/enroll/?next=/courses/" class="btn btn-sm btn-warning rounded-pill px-3 py-1">
-                  {% if course.id in enrolled_ids %}Скасувати запис{% else %}Записатися{% endif %}
-                </a>
-                <a href="/courses/{{ course.id }}/like/?next=/courses/" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1">
-                  {% if course.id in liked_ids %}Прибрати вподобання{% else %}Вподобати{% endif %}
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <span class="card-barber-meta">
+                  {{ course.created_at|date:"d.m.Y" }}
+                </span>
+                <a href="/profile/{{ course.teacher.id }}" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">
+                  Профіль майстра
                 </a>
               </div>
             </div>
@@ -58,11 +98,21 @@
       </div>
     {% else %}
       <p class="text-secondary">
-        Курсів ще немає. Створи курс у <a href="/admin/" class="link-light text-decoration-underline">/admin/</a>
-        або через ендпоінт <code>/testing/</code>.
+        Курсів ще немає. Додай через
+        <a href="/admin/" class="link-light text-decoration-underline">/admin/</a>.
       </p>
     {% endif %}
   </div>
 </section>
-{% endblock %}
 
+<script>
+function toggleDesc(id, btn) {
+  const short = document.getElementById('short-' + id);
+  const full  = document.getElementById('full-'  + id);
+  const isOpen = full.classList.contains('open');
+  full.classList.toggle('open', !isOpen);
+  short.style.display = isOpen ? 'block' : 'none';
+  btn.textContent = isOpen ? 'Читати більше ↓' : 'Згорнути ↑';
+}
+</script>
+{% endblock %}
