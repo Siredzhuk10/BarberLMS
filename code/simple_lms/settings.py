@@ -8,7 +8,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-cshb@rqi-s9-*(12+ufhy3crc8
 
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["*"]
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
@@ -103,3 +102,4 @@ CSRF_TRUSTED_ORIGINS = [
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
+ALLOWED_HOSTS = ["*"]
