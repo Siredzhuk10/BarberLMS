@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Вхід{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container" style="max-width: 520px;">
+    <h1 class="hero-title">Вхід</h1>
+    <form method="post" class="card-barber">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-accent">Увійти</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+

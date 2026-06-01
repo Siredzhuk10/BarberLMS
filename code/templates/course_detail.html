@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Barber Academy · {{ course.name }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span>Курс</span></div>
+    <h1 class="hero-title course-title">{{ course.name }}</h1>
+    <p class="hero-subtitle">{{ course.description }}</p>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <span class="badge-outline">Ціна: <span class="money">{{ course.price }}</span> ₴</span>
+      <span class="badge-outline">Викладач: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</span>
+    </div>
+    <div class="d-flex flex-wrap gap-2 mt-4">
+      <a href="/courses/{{ course.id }}/enroll/?next=/courses/{{ course.id }}/" class="btn btn-warning rounded-pill px-3 py-2">
+        {% if is_enrolled %}Скасувати запис{% else %}Записатися на курс{% endif %}
+      </a>
+      <a href="/courses/{{ course.id }}/like/?next=/courses/{{ course.id }}/" class="btn btn-outline-danger rounded-pill px-3 py-2">
+        {% if is_liked %}Прибрати вподобання{% else %}Вподобати{% endif %}
+      </a>
+      <a href="/courses/" class="btn btn-outline-light rounded-pill px-3 py-2">Назад до курсів</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
